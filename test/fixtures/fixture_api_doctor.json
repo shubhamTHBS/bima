@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "first_name": "Amitabh",
+        "last_name": "Bachchan",
+        "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Indian_actor_Amitabh_Bachchan.jpg/440px-Indian_actor_Amitabh_Bachchan.jpg",
+        "favorite": false,
+        "primary_contact_no": "+919793380800",
+        "rating": "3.5",
+        "email_address": "ab@email.com",
+        "qualification": "BSc Medical Sciences (2006), MBChB (2010), LLB Bachelor of Laws (2015)",
+        "description": "Meet Dr. Amitabh, our Chief Medical Officer. Dr. Amitabh completed his medical training at University of India Medical School and has practiced medicine for over 8 years. His passion is to reach out to every Indiaian with quality medical information and care and this is why he loves telemedicine. He enjoys reading, watching movies and listening to music.",
+        "specialization": "General Practice",
+        "languagesKnown": "English, Hindi, Kannada"
+    },
+    {
+        "id": 2,
+        "first_name": "Shahrukh",
+        "last_name": "Khan",
+        "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Shah_Rukh_Khan_graces_the_launch_of_the_new_Santro.jpg",
+        "favorite": false,
+        "primary_contact_no": "+919793390000",
+        "rating": "2",
+        "email_address": "iam_skr@email.com",
+        "qualification": "BSc (Hons) Physician Assistantship (2014)",
+        "description": "PA. Shahrukh is our Medical Team Leader. He graduated from Central University and has over 4 years’ clinical experience. He is passionate about promoting access to quality health and preventive care. Telemedicine gives him the opportunity to do so efficiently. He likes reading, sports, watching movies, listening to music and theatre arts.",
+        "specialization": "General Practice",
+        "languagesKnown": "English, Hindi"
+    }
+]
