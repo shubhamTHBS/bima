@@ -1,3 +1,4 @@
+import 'package:bima/core/theme/theme.dart';
 import 'package:bima/core/utils/db_util.dart';
 import 'package:bima/features/doctor/data/data_sources/local/tables/doctor_table.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
@@ -25,9 +26,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Bima POC',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: AppTheme.light,
         home: const DocotorList(),
       ),
     );
