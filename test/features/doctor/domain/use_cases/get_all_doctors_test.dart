@@ -20,6 +20,7 @@ void main() {
 
   final contacts = [
     const DoctorEntity(
+        rating: '3.5',
         id: 1,
         firstName: 'Amitabh',
         lastName: 'Bachchan',

@@ -7,7 +7,7 @@ class DoctorModel extends DoctorEntity {
   final String profilePic;
   final bool? favorite;
   final String? primaryContactNo;
-  final String? rating;
+  final String rating;
   final String? emailAddress;
   final String? qualification;
   final String description;
@@ -20,7 +20,7 @@ class DoctorModel extends DoctorEntity {
     required this.profilePic,
     this.favorite,
     this.primaryContactNo,
-    this.rating,
+    required this.rating,
     this.emailAddress,
     this.qualification,
     required this.description,
@@ -32,7 +32,8 @@ class DoctorModel extends DoctorEntity {
             lastName: lastName,
             profilePic: profilePic,
             specialization: specialization,
-            description: description);
+            description: description,
+            rating: rating);
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     return DoctorModel(

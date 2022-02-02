@@ -1,3 +1,4 @@
+import 'package:bima/features/doctor/data/data_sources/local/doctor_local_data_source.dart';
 import 'package:bima/features/doctor/data/data_sources/remote/doctor_remote_data_source.dart';
 import 'package:bima/features/doctor/data/repositories/doctor_repository_impl.dart';
 import 'package:bima/features/doctor/domain/repositories/doctor_repository.dart';
@@ -14,11 +15,13 @@ Future<void> init() async {
   g.registerLazySingleton(() => GetAllDoctors(g()));
 
   g.registerLazySingleton<DoctorRepository>(
-    () => DoctorRepositoryImpl(g()),
+    () => DoctorRepositoryImpl(localDataSource: g(), remoteDataSource: g()),
   );
 
   g.registerLazySingleton<DoctorRemoteDataSource>(
       () => DoctorRemoteDataSourceImpl(client: g()));
+  g.registerLazySingleton<DoctorLocalDataSource>(
+      () => DoctorLocalDataSourceImpl());
 
   g.registerLazySingleton(() => http.Client());
 }
