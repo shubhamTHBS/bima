@@ -23,13 +23,14 @@ class DoctorTableAdapter extends TypeAdapter<DoctorTable> {
       profilePic: fields[3] as String,
       specialization: fields[4] as String,
       description: fields[5] as String,
+      rating: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, DoctorTable obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class DoctorTableAdapter extends TypeAdapter<DoctorTable> {
       ..writeByte(4)
       ..write(obj.specialization)
       ..writeByte(5)
-      ..write(obj.description);
+      ..write(obj.description)
+      ..writeByte(6)
+      ..write(obj.rating);
   }
 
   @override
