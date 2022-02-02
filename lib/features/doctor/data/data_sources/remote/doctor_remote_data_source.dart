@@ -23,9 +23,12 @@ class DoctorRemoteDataSourceImpl extends DoctorRemoteDataSource {
       final result = json.decode(response.body);
       final doctors =
           List.from(result).map((e) => DoctorModel.fromJson(e)).toList();
+      doctors.sort((a, b) => b.rating.compareTo(a.rating));
       return doctors;
     } else {
       throw ServerException();
     }
   }
+
+  void sortByRating() {}
 }
