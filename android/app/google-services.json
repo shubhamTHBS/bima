@@ -37,6 +37,13 @@
             {
               "client_id": "215302735890-640b1m35fjlkgbt08a1vb25kg218ea6m.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "215302735890-eqge6a9sobs9aqjjrconvvkin05as2ef.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.milvik.bima"
+              }
             }
           ]
         }
