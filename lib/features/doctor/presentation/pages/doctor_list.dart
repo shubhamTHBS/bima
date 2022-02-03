@@ -1,3 +1,4 @@
+import 'package:bima/core/theme/color.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
 import 'package:bima/features/doctor/presentation/widgets/doctor_display.dart';
 import 'package:bima/features/doctor/presentation/widgets/loading.dart';
@@ -12,7 +13,33 @@ class DocotorList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar(context),
       body: buildBody(context),
+    );
+  }
+
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      elevation: 8,
+      leading: IconButton(
+        icon: const Icon(
+          Icons.menu,
+          color: AppColor.primaryColor,
+        ),
+        onPressed: () {},
+      ),
+      title: Image.asset(
+        'assets/images/doctor-bima.png',
+        fit: BoxFit.scaleDown,
+        width: MediaQuery.of(context).size.width / 2.5,
+      ),
+      actions: [
+        Image.asset(
+          'assets/images/bima-logo.png',
+          height: 40,
+          fit: BoxFit.cover,
+        )
+      ],
     );
   }
 
