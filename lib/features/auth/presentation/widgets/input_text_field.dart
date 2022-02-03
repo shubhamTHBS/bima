@@ -1,3 +1,4 @@
+import 'package:bima/core/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -140,7 +141,7 @@ class _InputTextFieldState extends State<InputTextField> {
               obscuringCharacter: '*',
               validator: widget.validator,
               enabled: widget.enabled,
-              // cursorColor: AppColor.defaultPeach,
+              cursorColor: AppColor.accentColor,
               textCapitalization: widget.textCapitalization,
               textInputAction: widget.textInputAction,
               onTap: widget.onTap != null ? () => widget.onTap!() : null,
@@ -162,7 +163,7 @@ class _InputTextFieldState extends State<InputTextField> {
                 //     fontSize: 1.75 * SizeConfiguration.textsizeMultiplier),
                 isDense: true,
                 contentPadding: widget.isMobileNumber
-                    ? const EdgeInsets.only(bottom: 7.5)
+                    ? const EdgeInsets.only(bottom: 6.0)
                     : widget.isOutlineInpurBorder
                         ? const EdgeInsets.only(
                             left: 15.0, top: 15.0, bottom: 15.0)
@@ -170,6 +171,10 @@ class _InputTextFieldState extends State<InputTextField> {
                 suffixIconConstraints: const BoxConstraints(
                   minWidth: 1,
                   minHeight: 1,
+                ),
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.only(bottom: 3.0),
+                  child: widget.suffixIcon,
                 ),
               ),
             ),

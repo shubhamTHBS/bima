@@ -22,7 +22,7 @@ class _PhoneSignInState extends State<PhoneSignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AuthBloc, AuthState>(
+      body: BlocConsumer<AuthBloc, AuthStatee>(
         listener: (context, state) {
           if (state is AuthCodeSentState) {
             Navigator.push(
@@ -39,7 +39,7 @@ class _PhoneSignInState extends State<PhoneSignIn> {
                   textInputAction: TextInputAction.done,
                   key: _numberKey,
                   isMobileNumber: true,
-                  title: 'Phone Number',
+                  // title: 'Phone Number',
                   controller: _prefixController,
                   mobileController: _mobileNoController,
                   keyboardType:
