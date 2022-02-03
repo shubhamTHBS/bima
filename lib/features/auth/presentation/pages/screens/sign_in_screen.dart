@@ -74,7 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 12.5,
                 ),
                 Text(
-                  'We will send you an SMS wit the verification code to this number',
+                  'We will send you an SMS with the verification code to this number',
                   style: TextStyle(
                       fontFamily: Font.ROBOTO,
                       color: Colors.white.withOpacity(0.6),
