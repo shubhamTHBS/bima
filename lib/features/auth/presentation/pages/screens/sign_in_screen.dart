@@ -5,7 +5,6 @@ import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_state.dar
 import 'package:bima/features/auth/presentation/pages/screens/verify_phone_number.dart';
 import 'package:bima/features/auth/presentation/widgets/button.dart';
 import 'package:bima/features/auth/presentation/widgets/text_input_country.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,8 +85,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     if (state is AuthCodeSentState) {
                       Navigator.push(
                           context,
-                          CupertinoPageRoute(
-                              builder: (context) => VerifyPhoneNumberScreen()));
+                          MaterialPageRoute(
+                              builder: (context) => VerifyPhoneNumberScreen(
+                                  phoneNumber:
+                                      _mobileNoController.text.trim())));
                     }
                   },
                   builder: (context, state) {
