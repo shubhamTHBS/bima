@@ -33,7 +33,7 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  BlocConsumer<AuthBloc, AuthState>(
+                  BlocConsumer<AuthBloc, AuthStatee>(
                     listener: (context, state) {
                       if (state is AuthLoggedInState) {
                         Navigator.popUntil(context, (route) => route.isFirst);

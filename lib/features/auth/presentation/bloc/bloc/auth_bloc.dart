@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
+class AuthBloc extends Bloc<AuthEvent, AuthStatee> {
   final SignInWithPhoneNumber signInWithPhoneNumber;
   final VerifySmsCode verifySmsCode;
   AuthBloc({required this.signInWithPhoneNumber, required this.verifySmsCode})

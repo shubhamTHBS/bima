@@ -1,3 +1,5 @@
+import 'package:bima/core/theme/color.dart';
+import 'package:bima/core/theme/text_styles.dart';
 import 'package:bima/features/auth/presentation/widgets/input_text_field.dart';
 import 'package:bima/features/auth/presentation/widgets/search_country.dart';
 import 'package:country_pickers/countries.dart';
@@ -14,7 +16,6 @@ class TextInputCountry extends StatefulWidget {
   final bool isSubtitled;
   final bool isHeader;
   final bool isMobileNumber;
-  final String title;
   final String? subtitle;
   final double horizontalSpace;
   final double verticalSpace;
@@ -66,7 +67,6 @@ class TextInputCountry extends StatefulWidget {
     this.isSubtitled = false,
     this.isHeader = false,
     this.isMobileNumber = false,
-    required this.title,
     this.subtitle,
     this.horizontalSpace = 0,
     this.verticalSpace = 0,
@@ -126,20 +126,22 @@ class TextInputCountryState extends State<TextInputCountry> {
   Country? _selectedCountry;
   bool isFocus = false;
   Widget _buildCountryPicker() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         // crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          CountryPickerUtils.getDefaultFlagImage(_selectedCountry!),
+          // CountryPickerUtils.getDefaultFlagImage(_selectedCountry!),
           Text('+${_selectedCountry?.phoneCode} ',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                  fontSize: /*_selectedCountry.phoneCode.length>3?11:*/ 10)),
+                  color: AppColor.primaryGreen,
+                  fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                  fontSize: /*_selectedCountry.phoneCode.length>3?11:*/ 22)),
           // const SizedBox(width: 5),
           const SizedBox(
             width: 20,
             child: Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
+              Icons.keyboard_arrow_down,
+              color: AppColor.primaryGreen,
             ),
           ),
         ],
@@ -166,8 +168,8 @@ class TextInputCountryState extends State<TextInputCountry> {
     return _selectedCountry!.isoCode;
   }
 
-  Widget _header() => Text(widget.title,
-      style: const TextStyle(fontSize: 14, color: Colors.grey));
+  // Widget _header() => Text(widget.title,
+  //     style: const TextStyle(fontSize: 14, color: Colors.grey));
 
   // ignore: unused_element
   // Widget _headerWithSubtitle() => Padding(
@@ -252,14 +254,34 @@ class TextInputCountryState extends State<TextInputCountry> {
               focusNode: widget.focusNode,
               keyboardType: widget.keyboardType,
               textInputAction: widget.textInputAction,
-              title: 'Mobile number',
+              // title: 'Mobile number',
               controller: widget.mobileController,
-              validator: widget.validator,
-              titleColor: Colors.grey,
+              // validator: widget.validator,
+              // titleColor: Colors.grey,
               // titleFontFamily: Font.CTRBOOK,
-              labelColor: Colors.black,
+              labelFontSize: 22.5,
+              labelColor: AppColor.accentColor,
               // labelFontFamily: Font.CTRMEDIUM,
               hintText: 'Mobile number',
+              labelFontFamily: Font.ROBOTO_CONDENSED_BOLD,
+              isSuffix: true,
+              suffixIcon: SizedBox(
+                width: 20,
+                height: 20,
+                child: IconButton(
+                  padding: const EdgeInsets.all(0.0),
+                  icon: const Icon(
+                    Icons.cancel_outlined,
+                    color: AppColor.accentColor,
+                    size: 18,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      widget.mobileController?.clear();
+                    });
+                  },
+                ),
+              ),
               inputFormatters: widget.inputFormatters,
               isMobileNumber: true,
               onEditingComplete: () {
@@ -314,7 +336,7 @@ class TextInputCountryState extends State<TextInputCountry> {
                   border: BorderDirectional(
                       bottom: !widget.isHeader
                           ? BorderSide(
-                              color: Colors.black.withOpacity(0.12),
+                              color: Colors.white.withOpacity(0.6),
                               width: 1.0,
                               style: BorderStyle.solid)
                           : BorderSide.none)),
@@ -322,7 +344,7 @@ class TextInputCountryState extends State<TextInputCountry> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _header(),
+                  // _header(),
                   !widget.isHeader
                       ? !widget.isMobileNumber
                           ? _textInput()

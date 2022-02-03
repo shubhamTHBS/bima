@@ -1,4 +1,8 @@
 import 'package:bima/core/theme/color.dart';
+import 'package:bima/features/auth/presentation/bloc/bloc/auth_bloc.dart';
+import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
+import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_state.dart';
+import 'package:bima/features/auth/presentation/pages/screens/sign_in_screen.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
 import 'package:bima/features/doctor/presentation/widgets/doctor_display.dart';
 import 'package:bima/features/doctor/presentation/widgets/loading.dart';
@@ -21,12 +25,25 @@ class DocotorList extends StatelessWidget {
   AppBar appBar(BuildContext context) {
     return AppBar(
       elevation: 8,
-      leading: IconButton(
-        icon: const Icon(
-          Icons.menu,
-          color: AppColor.primaryColor,
-        ),
-        onPressed: () {},
+      leading: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthLoggedOutState) {
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => SignInScreen()));
+          }
+        },
+        builder: (context, state) {
+          return IconButton(
+            icon: const Icon(
+              Icons.menu,
+              color: AppColor.primaryColor,
+            ),
+            onPressed: () {
+              BlocProvider.of<AuthCubit>(context).logOut();
+            },
+          );
+        },
       ),
       title: Image.asset(
         'assets/images/doctor-bima.png',
