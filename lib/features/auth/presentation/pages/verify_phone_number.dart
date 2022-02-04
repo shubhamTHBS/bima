@@ -37,10 +37,10 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
                     listener: (context, state) {
                       if (state is AuthLoggedInState) {
                         Navigator.popUntil(context, (route) => route.isFirst);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const DocotorList()));
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const DocotorList(phoneNumber: state.props.first,)));
                       } else if (state is AuthErrorState) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           backgroundColor: Colors.red,

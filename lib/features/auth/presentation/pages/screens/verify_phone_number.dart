@@ -7,6 +7,7 @@ import 'package:bima/features/doctor/presentation/pages/doctor_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class VerifyPhoneNumberScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class VerifyPhoneNumberScreen extends StatefulWidget {
 class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen> {
   TextEditingController otpController = TextEditingController();
   String sms = '';
+  bool _termsAccepted = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,10 +119,16 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Button(
-                            onPressed: () {
-                              BlocProvider.of<AuthCubit>(context)
-                                  .verifyOTP(sms);
-                            },
+                            // onPressed: () {
+                            //   BlocProvider.of<AuthCubit>(context)
+                            //       .verifyOTP(sms);
+                            // },
+                            onPressed: !_termsAccepted
+                                ? () => null
+                                : () {
+                                    BlocProvider.of<AuthCubit>(context)
+                                        .verifyOTP(sms);
+                                  },
                             color: AppColor.primaryGreen,
                             textColor: Colors.white.withOpacity(0.6),
                             title: 'Login',
@@ -134,6 +142,81 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen> {
                       ),
                     );
                   },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _termsAccepted = !_termsAccepted;
+                        });
+                      },
+                      child: _termsAccepted
+                          ? Container(
+                              height: 15,
+                              width: 15,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColor.primaryGreen),
+                              child: Stack(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/svg/circularRectangle.svg',
+                                    color: AppColor.primaryGreen,
+                                  ),
+                                  Icon(
+                                    Icons.check,
+                                    size: 15,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ))
+                          : Container(
+                              height: 15,
+                              width: 15,
+                              child: SvgPicture.asset(
+                                'assets/svg/circularRectangle.svg',
+                                color: AppColor.primaryGreen,
+                              ),
+                            ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        text: 'I agree to the ',
+                        style: TextStyle(
+                            fontSize: 14, color: Colors.white.withOpacity(0.6)),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Terms Of Use',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AppColor.accentColor,
+                            ),
+                          ),
+                          TextSpan(
+                              text: ' and',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white.withOpacity(0.6),
+                              )),
+                          TextSpan(
+                            text: ' Privacy Policy',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AppColor.accentColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

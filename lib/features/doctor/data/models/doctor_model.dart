@@ -27,13 +27,14 @@ class DoctorModel extends DoctorEntity {
     required this.specialization,
     this.languagesKnown,
   }) : super(
-            id: id,
-            firstName: firstName,
-            lastName: lastName,
-            profilePic: profilePic,
-            specialization: specialization,
-            description: description,
-            rating: rating);
+          id: id,
+          firstName: firstName,
+          lastName: lastName,
+          profilePic: profilePic,
+          specialization: specialization,
+          description: description,
+          rating: rating,
+        );
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     return DoctorModel(
