@@ -22,6 +22,7 @@ class DoctorTable extends DoctorModel {
   String description;
   @HiveField(6)
   String rating;
+
   DoctorTable({
     required this.id,
     required this.firstName,
@@ -31,29 +32,32 @@ class DoctorTable extends DoctorModel {
     required this.description,
     required this.rating,
   }) : super(
-            id: id,
-            firstName: firstName,
-            lastName: lastName,
-            profilePic: profilePic,
-            specialization: specialization,
-            description: description,
-            rating: rating);
+          id: id,
+          firstName: firstName,
+          lastName: lastName,
+          profilePic: profilePic,
+          specialization: specialization,
+          description: description,
+          rating: rating,
+        );
 
   factory DoctorTable.fromModel(DoctorModel model) => DoctorTable(
-      id: model.id,
-      firstName: model.firstName,
-      lastName: model.lastName,
-      profilePic: model.profilePic,
-      specialization: model.specialization,
-      description: model.description,
-      rating: model.rating);
+        id: model.id,
+        firstName: model.firstName,
+        lastName: model.lastName,
+        profilePic: model.profilePic,
+        specialization: model.specialization,
+        description: model.description,
+        rating: model.rating,
+      );
 
   static DoctorModel toModel(DoctorTable table) => DoctorModel(
-      id: table.id,
-      firstName: table.firstName,
-      lastName: table.lastName,
-      profilePic: table.profilePic,
-      specialization: table.specialization,
-      description: table.description,
-      rating: table.rating);
+        id: table.id,
+        firstName: table.firstName,
+        lastName: table.lastName,
+        profilePic: table.profilePic,
+        specialization: table.specialization,
+        description: table.description,
+        rating: table.rating,
+      );
 }
