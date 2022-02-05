@@ -1,4 +1,3 @@
-import 'package:bima/features/doctor/data/models/doctor_model.dart';
 import 'package:hive/hive.dart';
 
 import 'package:bima/core/constants/local_database_type_constants.dart';
@@ -7,7 +6,7 @@ import 'package:bima/features/doctor/domain/entities/doctor.dart';
 part 'doctor_table.g.dart';
 
 @HiveType(typeId: HiveTypeIdConstants.doctorTableId)
-class DoctorTable extends DoctorModel {
+class DoctorTable extends DoctorEntity {
   @HiveField(0)
   int id;
   @HiveField(1)
@@ -41,7 +40,7 @@ class DoctorTable extends DoctorModel {
           rating: rating,
         );
 
-  factory DoctorTable.fromModel(DoctorModel model) => DoctorTable(
+  factory DoctorTable.fromModel(DoctorEntity model) => DoctorTable(
         id: model.id,
         firstName: model.firstName,
         lastName: model.lastName,
@@ -51,7 +50,7 @@ class DoctorTable extends DoctorModel {
         rating: model.rating,
       );
 
-  static DoctorModel toModel(DoctorTable table) => DoctorModel(
+  static DoctorEntity toModel(DoctorTable table) => DoctorEntity(
         id: table.id,
         firstName: table.firstName,
         lastName: table.lastName,

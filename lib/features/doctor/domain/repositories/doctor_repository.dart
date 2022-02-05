@@ -4,4 +4,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class DoctorRepository {
   Future<Either<Failure, List<DoctorEntity>>>? getAllDoctors();
+  Future<Either<Failure, void>> updateDoctorDetail(DoctorEntity doctorEntity);
 }
