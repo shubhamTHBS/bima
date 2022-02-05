@@ -3,25 +3,25 @@ import 'package:bima/features/doctor/data/models/doctor_model.dart';
 import 'package:hive/hive.dart';
 
 abstract class DoctorLocalDataSource {
-  Future<void> saveDoctor(DoctorTable movieTable);
-  Future<List<DoctorModel>> getDoctors();
+  Future<void> updateDoctor(DoctorTable doctorModel);
+  Future<List<DoctorTable>> getDoctors();
   Future<void> insertOrUpdateAll(List<DoctorModel> doctors);
   Future<void> deleteAll();
 }
 
 class DoctorLocalDataSourceImpl extends DoctorLocalDataSource {
   @override
-  Future<List<DoctorModel>> getDoctors() async {
+  Future<List<DoctorTable>> getDoctors() async {
     final Box<DoctorTable> box = await Hive.openBox('doctor');
-    final List<DoctorTable> doctorData = box.toMap().values.toList();
+    List<DoctorTable> doctorData = box.toMap().values.toList();
     doctorData.sort((a, b) => b.rating.compareTo(a.rating));
-    return doctorData.map(DoctorTable.toModel).toList();
+    return doctorData;
   }
 
   @override
-  Future<void> saveDoctor(DoctorTable movieTable) {
-    // TODO: implement saveDoctor
-    throw UnimplementedError();
+  Future<void> updateDoctor(DoctorTable doctorModel) async {
+    final Box<DoctorTable> box = await Hive.openBox('doctor');
+    await box.putAt(doctorModel.id, doctorModel);
   }
 
   @override
@@ -31,6 +31,7 @@ class DoctorLocalDataSourceImpl extends DoctorLocalDataSource {
         doctor.id.toString(): DoctorTable.fromModel(doctor)
     };
     final Box<DoctorTable> box = await Hive.openBox('doctor');
+    print(doctorMap);
     await box.putAll(doctorMap);
   }
 

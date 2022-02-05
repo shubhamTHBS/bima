@@ -2,8 +2,10 @@ import 'package:bima/core/theme/color.dart';
 import 'package:bima/core/theme/text_styles.dart';
 import 'package:bima/features/auth/presentation/widgets/button.dart';
 import 'package:bima/features/doctor/domain/entities/doctor.dart';
+import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DoctorDetail extends StatefulWidget {
   final DoctorEntity doctor;
@@ -42,7 +44,6 @@ class _DoctorDetailState extends State<DoctorDetail> {
   }
 
   SafeArea _body() {
-    print(widget.doctor);
     return SafeArea(
       child: Stack(
         // alignment: AlignmentDirectional.topCenter,
@@ -81,22 +82,65 @@ class _DoctorDetailState extends State<DoctorDetail> {
                   const SizedBox(
                     height: 8,
                   ),
-                  Button(
-                    padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
-                    height: 30,
-                    title: !isEdit
-                        ? 'Edit Profile'.toUpperCase()
-                        : 'Save Profile'.toUpperCase(),
-                    onPressed: () {
-                      setState(() {
-                        isEdit = !isEdit;
-                      });
+                  BlocConsumer<DoctorBloc, DoctorState>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      if (state is DoctorInitial) {
+                        return Button(
+                          padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                          height: 30,
+                          title: 'Edit Profile'.toUpperCase(),
+                          onPressed: () {
+                            BlocProvider.of<DoctorBloc>(context).add(IsEdit());
+                          },
+                          color: AppColor.primaryGreen,
+                          borderRadius: 6,
+                          fontSize: 14,
+                          font: Font.ROBOTO_CONDENSED_BOLD,
+                          textColor: Colors.white.withOpacity(0.6),
+                        );
+                      } else if (state is SaveState) {
+                        return Button(
+                          padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                          height: 30,
+                          title: 'Save Profile'.toUpperCase(),
+                          onPressed: () {
+                            BlocProvider.of<DoctorBloc>(context).add(
+                                UpdateDoctorDetailEvent(
+                                    doctorEntity: DoctorEntity(
+                                        id: widget.doctor.id,
+                                        description: widget.doctor.description,
+                                        firstName: _firstNameController.text,
+                                        lastName: _latNameController.text,
+                                        profilePic: widget.doctor.profilePic,
+                                        rating: widget.doctor.rating,
+                                        specialization:
+                                            widget.doctor.specialization)));
+                          },
+                          color: AppColor.primaryGreen,
+                          borderRadius: 6,
+                          fontSize: 14,
+                          font: Font.ROBOTO_CONDENSED_BOLD,
+                          textColor: Colors.white.withOpacity(0.6),
+                        );
+                      } else if (state is DoctorDetailUpdated) {
+                        return Button(
+                          padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                          height: 30,
+                          title: 'Edit Profile'.toUpperCase(),
+                          onPressed: () {
+                            BlocProvider.of<DoctorBloc>(context).add(IsEdit());
+                          },
+                          color: AppColor.primaryGreen,
+                          borderRadius: 6,
+                          fontSize: 14,
+                          font: Font.ROBOTO_CONDENSED_BOLD,
+                          textColor: Colors.white.withOpacity(0.6),
+                        );
+                      } else {
+                        return Container();
+                      }
                     },
-                    color: AppColor.primaryGreen,
-                    borderRadius: 6,
-                    fontSize: 14,
-                    font: Font.ROBOTO_CONDENSED_BOLD,
-                    textColor: Colors.white.withOpacity(0.6),
                   ),
                   const SizedBox(
                     height: 20,
@@ -114,124 +158,142 @@ class _DoctorDetailState extends State<DoctorDetail> {
                               fontSize: 20),
                         ),
                       ))),
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      color: Colors.grey[300],
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'First Name'.toUpperCase(),
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                  BlocBuilder<DoctorBloc, DoctorState>(
+                    builder: (context, state) {
+                      return Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          color: Colors.grey[300],
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.white),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(5),
                                       ),
                                     ),
-                                    TextFormField(
-                                      readOnly: !isEdit,
-                                      controller: _firstNameController,
-                                      decoration: const InputDecoration(
-                                          isDense: true,
-                                          contentPadding:
-                                              EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                          border: InputBorder.none),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'First Name'.toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontFamily:
+                                                Font.ROBOTO_CONDENSED_BOLD,
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          readOnly: state is DoctorInitial,
+                                          controller: _firstNameController,
+                                          // onChanged: (value) =>
+                                          //     _firstNameController.text = value,
+                                          decoration: const InputDecoration(
+                                              isDense: true,
+                                              contentPadding:
+                                                  EdgeInsets.fromLTRB(
+                                                      0, 4, 0, 4),
+                                              border: InputBorder.none),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(5),
                                   ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Last Name'.toUpperCase(),
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.white),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(5),
                                       ),
                                     ),
-                                    TextFormField(
-                                      readOnly: !isEdit,
-                                      controller: _latNameController,
-                                      decoration: const InputDecoration(
-                                          isDense: true,
-                                          contentPadding:
-                                              EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                          border: InputBorder.none),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Last Name'.toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontFamily:
+                                                Font.ROBOTO_CONDENSED_BOLD,
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          readOnly: state is DoctorInitial,
+                                          controller: _latNameController,
+                                          // onChanged: (value) =>
+                                          //     _latNameController.text = value,
+                                          decoration: const InputDecoration(
+                                              isDense: true,
+                                              contentPadding:
+                                                  EdgeInsets.fromLTRB(
+                                                      0, 4, 0, 4),
+                                              border: InputBorder.none),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(5),
                                   ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Contact Number'.toUpperCase(),
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.white),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(5),
                                       ),
                                     ),
-                                    TextFormField(
-                                      readOnly: true,
-                                      // initialValue:
-                                      //     widget.doctor.primaryContactNo,
-                                      decoration: const InputDecoration(
-                                          isDense: true,
-                                          contentPadding:
-                                              EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                          border: InputBorder.none),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Contact Number'.toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontFamily:
+                                                Font.ROBOTO_CONDENSED_BOLD,
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          readOnly: true,
+                                          // initialValue:
+                                          //     widget.doctor.primaryContactNo,
+                                          decoration: const InputDecoration(
+                                              isDense: true,
+                                              contentPadding:
+                                                  EdgeInsets.fromLTRB(
+                                                      0, 4, 0, 4),
+                                              border: InputBorder.none),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   )
                 ],
               ),

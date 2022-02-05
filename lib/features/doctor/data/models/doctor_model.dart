@@ -1,18 +1,18 @@
 import 'package:bima/features/doctor/domain/entities/doctor.dart';
 
 class DoctorModel extends DoctorEntity {
-  final int id;
-  final String firstName;
-  final String lastName;
-  final String profilePic;
-  final bool? favorite;
-  final String? primaryContactNo;
-  final String rating;
-  final String? emailAddress;
-  final String? qualification;
-  final String description;
-  final String specialization;
-  final String? languagesKnown;
+  int id;
+  String firstName;
+  String lastName;
+  String profilePic;
+  bool? favorite;
+  String? primaryContactNo;
+  String rating;
+  String? emailAddress;
+  String? qualification;
+  String description;
+  String specialization;
+  String? languagesKnown;
   DoctorModel({
     required this.id,
     required this.firstName,
@@ -69,4 +69,15 @@ class DoctorModel extends DoctorEntity {
     data['languagesKnown'] = languagesKnown;
     return data;
   }
+
+  // DoctorModel.castFromEntity(final DoctorEntity doctorEntity)
+  //     : super(
+  //         id: doctorEntity.id,
+  //         firstName: doctorEntity.firstName,
+  //         lastName: doctorEntity.lastName,
+  //         profilePic: doctorEntity.profilePic,
+  //         specialization: doctorEntity.specialization,
+  //         description: doctorEntity.description,
+  //         rating: doctorEntity.rating,
+  //       );
 }

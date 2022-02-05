@@ -11,6 +11,8 @@ class DoctorInitial extends DoctorState {}
 
 class DoctorLoading extends DoctorState {}
 
+class SaveState extends DoctorState {}
+
 class DoctorsLoaded extends DoctorState {
   final List<DoctorEntity> doctors;
 
@@ -23,6 +25,14 @@ class DoctorsFailed extends DoctorState {
   final String message;
 
   const DoctorsFailed({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+class DoctorDetailUpdated extends DoctorState {
+  final String message;
+
+  const DoctorDetailUpdated({required this.message});
   @override
   List<Object> get props => [message];
 }
