@@ -74,7 +74,7 @@ class DocotorList extends StatelessWidget {
                   } else if (state is DoctorLoading) {
                     return const LoadingWidget();
                   } else if (state is DoctorsLoaded) {
-                    return DoctorsDisplay(doctorsList: state.doctors);
+                    return DoctorsDisplay(doctorsList: state);
                   } else if (state is DoctorsFailed) {
                     return MessageDisplay(message: state.message);
                   } else {

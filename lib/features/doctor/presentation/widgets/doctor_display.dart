@@ -1,12 +1,13 @@
 import 'package:bima/core/theme/color.dart';
 import 'package:bima/core/theme/text_styles.dart';
 import 'package:bima/features/doctor/domain/entities/doctor.dart';
+import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
 import 'package:bima/features/doctor/presentation/pages/doctor_detail.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class DoctorsDisplay extends StatelessWidget {
-  final List<DoctorEntity> doctorsList;
+  final DoctorsLoaded doctorsList;
 
   const DoctorsDisplay({Key? key, required this.doctorsList}) : super(key: key);
 
@@ -14,12 +15,12 @@ class DoctorsDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
         itemBuilder: (context, index) {
-          print(doctorsList[index].profilePic);
+          print(doctorsList.doctors[index].firstName);
           return ListTile(
             leading: CircleAvatar(
               radius: 21,
               child: CachedNetworkImage(
-                imageUrl: doctorsList[index].profilePic,
+                imageUrl: doctorsList.doctors[index].profilePic,
                 imageBuilder: (context, imageProvider) => Container(
                   width: 40.0,
                   height: 40.0,
@@ -35,7 +36,9 @@ class DoctorsDisplay extends StatelessWidget {
               ),
             ),
             title: Text(
-              doctorsList[index].firstName + ' ' + doctorsList[index].lastName,
+              doctorsList.doctors[index].firstName +
+                  ' ' +
+                  doctorsList.doctors[index].lastName,
               style: const TextStyle(
                 color: AppColor.primaryColorDark,
                 fontFamily: Font.ROBOTO_CONDENSED_BOLD,
@@ -47,7 +50,7 @@ class DoctorsDisplay extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
-                    doctorsList[index].specialization.toUpperCase(),
+                    doctorsList.doctors[index].specialization.toUpperCase(),
                     style: const TextStyle(
                       color: AppColor.primaryColorDark,
                       fontFamily: Font.ROBOTO_CONDENSED_REGULAR,
@@ -57,7 +60,7 @@ class DoctorsDisplay extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: Text(
-                    doctorsList[index].description,
+                    doctorsList.doctors[index].description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -77,12 +80,12 @@ class DoctorsDisplay extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            DoctorDetail(doctor: doctorsList[index])));
+                            DoctorDetail(doctor: doctorsList.doctors[index])));
               },
             ),
           );
         },
         separatorBuilder: (context, index) => const Divider(thickness: 1.5),
-        itemCount: doctorsList.length);
+        itemCount: doctorsList.doctors.length);
   }
 }
