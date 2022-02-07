@@ -24,39 +24,18 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
           (doctors) => DoctorsLoaded(doctors: doctors)));
     });
 
-    // on<UpdateDoctorDetailEvent>((event, emit) async {
-    //   emit(DoctorLoading());
-    //   Either<Failure, void>? result =
-    //       await updateDoctorDetail(event.doctorEntity);
-    //   emit(result!.fold(
-    //       (l) => const DoctorsFailed(message: 'serverFailureMessage'),
-    //       (r) => const DoctorDetailUpdated(
-    //           message: 'Details updated successfully!')));
-    // });
-    on<UpdateDoctorDetailEvent>(_onUpdateDoctor);
-    on<IsEdit>(_isEdit);
-  }
-  // void _onUpdateDoctor(
-  //     UpdateDoctorDetailEvent event, Emitter<DoctorState> emit) async {
-  //   final state = this.state;
-  //   emit(DoctorLoading());
-  //   Either<Failure, void>? result =
-  //         await updateDoctorDetail(event.doctorEntity);
-  //   if (state is DoctorsLoaded) {
-  //     List<DoctorEntity> doctors = (state.doctors.map((e) {
-  //       return e.id == event.doctorEntity.id ? event.doctorEntity : e;
-  //     })).toList();
-  //     emit(DoctorsLoaded(doctors: doctors));
-  //   }
-  // }
+    on<UpdateDoctorDetailEvent>((event, emit) async {
+      emit(DoctorLoading());
 
-  void _onUpdateDoctor(
-      UpdateDoctorDetailEvent event, Emitter<DoctorState> emit) async {
-    final state = this.state;
-    emit(DoctorLoading());
-    // Either<Failure, void>? result =
-    await updateDoctorDetail(event.doctorEntity);
-    emit(const DoctorDetailUpdated(message: 'Details updated successfully!'));
+      await updateDoctorDetail(event.doctorEntity);
+      final Either<Failure, List<DoctorEntity>>? result =
+          await getAllDoctors(NoParams());
+      emit(result!.fold(
+          (failure) => const DoctorsFailed(message: 'serverFailureMessage'),
+          (doctors) => DoctorsLoaded(doctors: doctors)));
+    });
+
+    on<IsEdit>(_isEdit);
   }
 
   void _isEdit(IsEdit event, Emitter<DoctorState> emit) {

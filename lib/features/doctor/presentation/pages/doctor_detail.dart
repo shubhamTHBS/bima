@@ -2,7 +2,9 @@ import 'package:bima/core/theme/color.dart';
 import 'package:bima/core/theme/text_styles.dart';
 import 'package:bima/features/auth/presentation/widgets/button.dart';
 import 'package:bima/features/doctor/domain/entities/doctor.dart';
+import 'package:bima/features/doctor/domain/use_cases/get_all_doctors.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
+import 'package:bima/features/doctor/presentation/widgets/loading.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,22 +85,14 @@ class _DoctorDetailState extends State<DoctorDetail> {
                     height: 8,
                   ),
                   BlocConsumer<DoctorBloc, DoctorState>(
-                    listener: (context, state) {},
+                    listener: (context, state) {
+                      if (state is DoctorsLoaded) {
+                        Navigator.pop(context);
+                      }
+                    },
                     builder: (context, state) {
-                      if (state is DoctorInitial) {
-                        return Button(
-                          padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
-                          height: 30,
-                          title: 'Edit Profile'.toUpperCase(),
-                          onPressed: () {
-                            BlocProvider.of<DoctorBloc>(context).add(IsEdit());
-                          },
-                          color: AppColor.primaryGreen,
-                          borderRadius: 6,
-                          fontSize: 14,
-                          font: Font.ROBOTO_CONDENSED_BOLD,
-                          textColor: Colors.white.withOpacity(0.6),
-                        );
+                      if (state is DoctorLoading) {
+                        return const LoadingWidget();
                       } else if (state is SaveState) {
                         return Button(
                           padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
@@ -123,23 +117,20 @@ class _DoctorDetailState extends State<DoctorDetail> {
                           font: Font.ROBOTO_CONDENSED_BOLD,
                           textColor: Colors.white.withOpacity(0.6),
                         );
-                      } else if (state is DoctorDetailUpdated) {
-                        return Button(
-                          padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
-                          height: 30,
-                          title: 'Edit Profile'.toUpperCase(),
-                          onPressed: () {
-                            BlocProvider.of<DoctorBloc>(context).add(IsEdit());
-                          },
-                          color: AppColor.primaryGreen,
-                          borderRadius: 6,
-                          fontSize: 14,
-                          font: Font.ROBOTO_CONDENSED_BOLD,
-                          textColor: Colors.white.withOpacity(0.6),
-                        );
-                      } else {
-                        return Container();
                       }
+                      return Button(
+                        padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                        height: 30,
+                        title: 'Edit Profile'.toUpperCase(),
+                        onPressed: () {
+                          BlocProvider.of<DoctorBloc>(context).add(IsEdit());
+                        },
+                        color: AppColor.primaryGreen,
+                        borderRadius: 6,
+                        fontSize: 14,
+                        font: Font.ROBOTO_CONDENSED_BOLD,
+                        textColor: Colors.white.withOpacity(0.6),
+                      );
                     },
                   ),
                   const SizedBox(
