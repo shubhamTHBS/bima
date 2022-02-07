@@ -76,10 +76,25 @@ class _DoctorDetailState extends State<DoctorDetail> {
                   const SizedBox(
                     height: 40,
                   ),
-                  Text(
-                    widget.doctor.firstName + ' ' + widget.doctor.lastName,
-                    style: const TextStyle(
-                        fontFamily: Font.ROBOTO_CONDENSED_BOLD, fontSize: 18),
+                  BlocBuilder<DoctorBloc, DoctorState>(
+                    builder: (context, state) {
+                      if (state is DoctorsLoaded) {
+                        DoctorEntity doctor = state.doctors.firstWhere(
+                            (doctor) => doctor.id == widget.doctor.id);
+                        return Text(
+                          doctor.firstName + ' ' + doctor.lastName,
+                          style: const TextStyle(
+                              fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                              fontSize: 18),
+                        );
+                      }
+                      return Text(
+                        widget.doctor.firstName + ' ' + widget.doctor.lastName,
+                        style: const TextStyle(
+                            fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                            fontSize: 18),
+                      );
+                    },
                   ),
                   const SizedBox(
                     height: 8,
@@ -92,7 +107,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
                     },
                     builder: (context, state) {
                       if (state is DoctorLoading) {
-                        return const LoadingWidget();
+                        return const CircularProgressIndicator();
                       } else if (state is SaveState) {
                         return Button(
                           padding:
@@ -153,6 +168,12 @@ class _DoctorDetailState extends State<DoctorDetail> {
                       ))),
                   BlocBuilder<DoctorBloc, DoctorState>(
                     builder: (context, state) {
+                      if (state is DoctorsLoaded) {
+                        DoctorEntity doctor = state.doctors.firstWhere(
+                            (doctor) => doctor.id == widget.doctor.id);
+                        return _buildBodyPersonalDetails(
+                            doctor: doctor, state: state);
+                      }
                       return Expanded(
                         child: Container(
                           width: double.infinity,
@@ -311,6 +332,126 @@ class _DoctorDetailState extends State<DoctorDetail> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Expanded _buildBodyPersonalDetails(
+      {required DoctorEntity doctor, required DoctorState state}) {
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        color: Colors.grey[300],
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Column(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'First Name'.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                        ),
+                      ),
+                      TextFormField(
+                        readOnly: state is! SaveState,
+                        controller:
+                            TextEditingController(text: doctor.firstName),
+                        decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                            border: InputBorder.none),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Last Name'.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                        ),
+                      ),
+                      TextFormField(
+                        readOnly: state is! SaveState,
+                        controller:
+                            TextEditingController(text: doctor.lastName),
+                        decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                            border: InputBorder.none),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Contact Number'.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                        ),
+                      ),
+                      TextFormField(
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                            border: InputBorder.none),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
