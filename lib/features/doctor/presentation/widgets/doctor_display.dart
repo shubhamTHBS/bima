@@ -1,6 +1,5 @@
 import 'package:bima/core/theme/color.dart';
 import 'package:bima/core/theme/text_styles.dart';
-import 'package:bima/features/doctor/domain/entities/doctor.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
 import 'package:bima/features/doctor/presentation/pages/doctor_detail.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,7 +14,6 @@ class DoctorsDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
         itemBuilder: (context, index) {
-          print(doctorsList.doctors[index].firstName);
           return ListTile(
             leading: CircleAvatar(
               radius: 21,

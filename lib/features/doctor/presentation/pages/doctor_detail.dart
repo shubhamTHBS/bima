@@ -41,14 +41,14 @@ class _DoctorDetailState extends State<DoctorDetail> {
 
   @override
   void dispose() {
-    _firstNameController.clear();
+    _firstNameController.dispose();
+    _latNameController.dispose();
     super.dispose();
   }
 
   SafeArea _body() {
     return SafeArea(
       child: Stack(
-        // alignment: AlignmentDirectional.topCenter,
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
@@ -95,7 +95,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                         return const LoadingWidget();
                       } else if (state is SaveState) {
                         return Button(
-                          padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
                           height: 30,
                           title: 'Save Profile'.toUpperCase(),
                           onPressed: () {
@@ -119,7 +120,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                         );
                       }
                       return Button(
-                        padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
                         height: 30,
                         title: 'Edit Profile'.toUpperCase(),
                         onPressed: () {
@@ -185,10 +187,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                           ),
                                         ),
                                         TextFormField(
-                                          readOnly: state is DoctorInitial,
+                                          readOnly: state is! SaveState,
                                           controller: _firstNameController,
-                                          // onChanged: (value) =>
-                                          //     _firstNameController.text = value,
                                           decoration: const InputDecoration(
                                               isDense: true,
                                               contentPadding:
@@ -225,10 +225,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                           ),
                                         ),
                                         TextFormField(
-                                          readOnly: state is DoctorInitial,
+                                          readOnly: state is! SaveState,
                                           controller: _latNameController,
-                                          // onChanged: (value) =>
-                                          //     _latNameController.text = value,
                                           decoration: const InputDecoration(
                                               isDense: true,
                                               contentPadding:
@@ -266,8 +264,6 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                         ),
                                         TextFormField(
                                           readOnly: true,
-                                          // initialValue:
-                                          //     widget.doctor.primaryContactNo,
                                           decoration: const InputDecoration(
                                               isDense: true,
                                               contentPadding:
@@ -291,21 +287,9 @@ class _DoctorDetailState extends State<DoctorDetail> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 22.5),
+            padding: const EdgeInsets.only(top: 22.5),
             child: Align(
               alignment: Alignment.topCenter,
-              // child: CircleAvatar(
-              //   backgroundColor: Colors.white,
-              //   radius: 45,
-              //   child: ClipOval(
-              //     child: Image.asset(
-              //       'assets/images/bima-logo.png',
-              //       height: 150,
-              //       width: 150,
-              //       fit: BoxFit.cover,
-              //     ),
-              //   ),
-              // ),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 45.0,
@@ -320,9 +304,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                           image: imageProvider, fit: BoxFit.cover),
                     ),
                   ),
-                  // placeholder: (context, url) => CircularProgressIndicator(),
                   errorWidget: (context, url, error) =>
-                      Center(child: Icon(Icons.image)),
+                      const Center(child: Icon(Icons.image)),
                 ),
               ),
             ),
