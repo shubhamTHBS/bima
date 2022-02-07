@@ -20,6 +20,9 @@ import 'package:http/http.dart' as http;
 final g = GetIt.instance;
 
 Future<void> init() async {
+  /*
+    Futures bloc
+    */
   g.registerFactory(
       () => DoctorBloc(getAllDoctors: g(), updateDoctorDetail: g()));
   g.registerFactory(() => AuthBloc(
@@ -28,6 +31,9 @@ Future<void> init() async {
       signOutUseCase: g(),
       getCurrentUser: g()));
 
+  /*
+    useCase
+    */
   g.registerLazySingleton(() => GetAllDoctors(g()));
   g.registerLazySingleton(() => UpdateDoctorDetail(g()));
 
@@ -36,6 +42,9 @@ Future<void> init() async {
   g.registerLazySingleton(() => SignOutUseCase(g()));
   g.registerLazySingleton(() => GetCurrentUser(g()));
 
+  /* 
+    repository
+    */
   g.registerLazySingleton<DoctorRepository>(
     () => DoctorRepositoryImpl(localDataSource: g(), remoteDataSource: g()),
   );
@@ -44,13 +53,18 @@ Future<void> init() async {
     () => AuthRepositoryImpl(g()),
   );
 
+  /*
+    data source
+    */
   g.registerLazySingleton<DoctorRemoteDataSource>(
       () => DoctorRemoteDataSourceImpl(client: g()));
   g.registerLazySingleton<DoctorLocalDataSource>(
       () => DoctorLocalDataSourceImpl());
-
   g.registerLazySingleton<AuthDataSource>(() => AuthDataSourceImpl(g()));
 
+  /*
+    External
+    */
   g.registerLazySingleton(() => http.Client());
   final _fireBaseAuth = FirebaseAuth.instance;
   g.registerLazySingleton(() => _fireBaseAuth);

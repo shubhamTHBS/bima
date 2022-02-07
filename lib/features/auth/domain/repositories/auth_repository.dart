@@ -11,5 +11,5 @@ abstract class AuthRepository {
   Future<AuthenticationEntity> verifySmsCode(
       {required String smsCode, required String verificationId});
   Future<void> signOut();
-  Future<String> getCurrentUser();
+  Future<String?> getCurrentUser();
 }
