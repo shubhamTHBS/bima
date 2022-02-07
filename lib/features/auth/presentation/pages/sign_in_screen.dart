@@ -1,8 +1,7 @@
 import 'package:bima/core/theme/color.dart';
 import 'package:bima/core/theme/text_styles.dart';
-import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
-import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_state.dart';
-import 'package:bima/features/auth/presentation/pages/screens/verify_phone_number.dart';
+import 'package:bima/features/auth/presentation/bloc/bloc/auth_bloc.dart';
+import 'package:bima/features/auth/presentation/pages/verify_phone_number.dart';
 import 'package:bima/features/auth/presentation/widgets/button.dart';
 import 'package:bima/features/auth/presentation/widgets/text_input_country.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       color: Colors.white.withOpacity(0.6),
                       fontSize: 15),
                 ),
-                BlocConsumer<AuthCubit, AuthState>(
+                BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is AuthCodeSentState) {
                       Navigator.push(
@@ -131,7 +130,8 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_mobileNoController.text.isNotEmpty) {
       String mobileNumber =
           '+' + _prefixController.text.trim() + _mobileNoController.text.trim();
-      BlocProvider.of<AuthCubit>(context).sendOTP(mobileNumber);
+      BlocProvider.of<AuthBloc>(context)
+          .add(PhoneAuthNumberVerified(phoneNumber: mobileNumber));
     }
   }
 }

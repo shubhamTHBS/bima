@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class AuthEntity extends Equatable {
+class AuthenticationEntity extends Equatable {
   final String phoneNumber;
-
-  const AuthEntity({required this.phoneNumber});
+  const AuthenticationEntity({
+    required this.phoneNumber,
+  });
 
   @override
   List<Object?> get props => [phoneNumber];

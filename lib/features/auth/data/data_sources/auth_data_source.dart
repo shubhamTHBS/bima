@@ -2,54 +2,69 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthDataSource {
-  Future<void> signInWithPhoneNumber({required String phoneNumber});
-  Future<void> verifySmsCode({required String smsCode});
+  Future<void> signInWithPhoneNumber({
+    required String phoneNumber,
+    required Function onCodeAutoRetrievalTimeout,
+    required Function onCodeSent,
+    required Function onVerificationFailed,
+    required Function onVerificationCompleted,
+  });
+  Future<User?> verifySmsCode(
+      {required String smsCode, required String verificationId});
+
+  Future<void> signOut();
+  Future<String> getCurrentUser();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
-  String _verificationId = '';
-  final FirebaseAuth auth;
+  String? _verificationId;
+  final FirebaseAuth _firebaseAuth;
 
-  AuthDataSourceImpl(this.auth);
+  AuthDataSourceImpl(this._firebaseAuth);
 
   @override
-  Future<void> signInWithPhoneNumber({required String phoneNumber}) async {
-    // ignore: prefer_function_declarations_over_variables
-    final PhoneVerificationCompleted phoneVerificationCompleted =
-        (AuthCredential authCredential) {
-      print('phone verified : Token ${authCredential.token}');
-    };
-
-    // ignore: prefer_function_declarations_over_variables
-    final PhoneVerificationFailed phoneVerificationFailed =
-        (FirebaseAuthException firebaseAuthException) {
-      print(
-        'phone failed : ${firebaseAuthException.message},${firebaseAuthException.code}',
-      );
-    };
-    // ignore: prefer_function_declarations_over_variables
-    final PhoneCodeAutoRetrievalTimeout phoneCodeAutoRetrievalTimeout =
-        (String verificationId) {
-      _verificationId = verificationId;
-      print('time out :$verificationId');
-    };
-    // ignore: prefer_function_declarations_over_variables
-    final PhoneCodeSent phoneCodeSent =
-        (String verificationId, [int? forceResendingToken]) {};
-    await auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: phoneVerificationCompleted,
-      verificationFailed: phoneVerificationFailed,
-      timeout: const Duration(seconds: 60),
-      codeSent: phoneCodeSent,
-      codeAutoRetrievalTimeout: phoneCodeAutoRetrievalTimeout,
-    );
+  Future<void> signInWithPhoneNumber(
+      {required String phoneNumber,
+      required Function onCodeAutoRetrievalTimeout,
+      required Function onCodeSent,
+      required Function onVerificationFailed,
+      required Function onVerificationCompleted}) async {
+    await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential authCredential) async {
+          UserCredential userCredential =
+              await _firebaseAuth.signInWithCredential(authCredential);
+          onVerificationCompleted(userCredential.user);
+        },
+        verificationFailed: (FirebaseAuthException firebaseAuthException) =>
+            onVerificationFailed(firebaseAuthException.message.toString()),
+        codeSent: (String verificationId, int? forceResendingToken) {
+          _verificationId = verificationId;
+          onCodeSent(verificationId);
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          _verificationId = verificationId;
+          onCodeAutoRetrievalTimeout(_verificationId);
+        });
   }
 
   @override
-  Future<void> verifySmsCode({required String smsCode}) async {
-    final AuthCredential authCredential = PhoneAuthProvider.credential(
-        verificationId: _verificationId, smsCode: smsCode);
-    await auth.signInWithCredential(authCredential);
+  Future<User?> verifySmsCode(
+      {required String smsCode, required String verificationId}) async {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: _verificationId!, smsCode: smsCode);
+    UserCredential userCredential =
+        await _firebaseAuth.signInWithCredential(credential);
+    return userCredential.user;
+  }
+
+  @override
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+  }
+
+  @override
+  Future<String> getCurrentUser() async {
+    return _firebaseAuth.currentUser!.phoneNumber!;
   }
 }
