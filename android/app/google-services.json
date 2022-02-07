@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "215302735890",
+    "project_id": "bimapoc",
+    "storage_bucket": "bimapoc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215302735890:android:6c0f7df37075251588f0cb",
+        "android_client_info": {
+          "package_name": "com.milvik.bima"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215302735890-p05d5ta62pain335ioqk4bog0nkmrkge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.milvik.bima",
+            "certificate_hash": "dfc01516d224ced6265d2ecaa733516873e6426b"
+          }
+        },
+        {
+          "client_id": "215302735890-640b1m35fjlkgbt08a1vb25kg218ea6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOG4a6DSeWZShohjd6ufbqV1ZrJM6wCrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215302735890-640b1m35fjlkgbt08a1vb25kg218ea6m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "215302735890-eqge6a9sobs9aqjjrconvvkin05as2ef.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.milvik.bima"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
