@@ -34,7 +34,7 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signOut() async => await dataSource.signOut();
 
   @override
-  Future<String> getCurrentUser() async {
+  Future<String?> getCurrentUser() async {
     return await dataSource.getCurrentUser();
   }
 }
