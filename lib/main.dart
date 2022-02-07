@@ -1,8 +1,7 @@
 import 'package:bima/core/theme/theme.dart';
 import 'package:bima/core/utils/db_util.dart';
-import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
-import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_state.dart';
-import 'package:bima/features/auth/presentation/pages/screens/sign_in_screen.dart';
+import 'package:bima/features/auth/presentation/bloc/bloc/auth_bloc.dart';
+import 'package:bima/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:bima/features/doctor/data/data_sources/local/tables/doctor_table.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
 import 'package:bima/features/doctor/presentation/pages/doctor_list.dart';
@@ -32,14 +31,14 @@ class MyApp extends StatelessWidget {
           create: (context) => di.g<DoctorBloc>(),
         ),
         BlocProvider(
-          create: (context) => AuthCubit(),
+          create: (context) => di.g<AuthBloc>(),
         ),
       ],
       child: MaterialApp(
         title: 'Bima POC',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
-        home: BlocBuilder<AuthCubit, AuthState>(
+        home: BlocBuilder<AuthBloc, AuthState>(
           buildWhen: (oldState, newState) {
             return oldState is AuthInitialState;
           },
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
-        // home: DocotorList(),
+        // home: const PhoneSignIn(),
       ),
     );
   }

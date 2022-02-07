@@ -1,8 +1,6 @@
 import 'package:bima/core/theme/color.dart';
 import 'package:bima/features/auth/presentation/bloc/bloc/auth_bloc.dart';
-import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_cubit.dart';
-import 'package:bima/features/auth/presentation/cubits/auth_cubit/auth_state.dart';
-import 'package:bima/features/auth/presentation/pages/screens/sign_in_screen.dart';
+import 'package:bima/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
 import 'package:bima/features/doctor/presentation/widgets/doctor_display.dart';
 import 'package:bima/features/doctor/presentation/widgets/loading.dart';
@@ -25,7 +23,7 @@ class DocotorList extends StatelessWidget {
   AppBar appBar(BuildContext context) {
     return AppBar(
       elevation: 8,
-      leading: BlocConsumer<AuthCubit, AuthState>(
+      leading: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthLoggedOutState) {
             Navigator.popUntil(context, (route) => route.isFirst);
@@ -40,7 +38,7 @@ class DocotorList extends StatelessWidget {
               color: AppColor.primaryColor,
             ),
             onPressed: () {
-              BlocProvider.of<AuthCubit>(context).logOut();
+              BlocProvider.of<AuthBloc>(context).add(SignOut());
             },
           );
         },
