@@ -1,21 +1,6 @@
-import 'package:bima/core/theme/theme.dart';
-import 'package:bima/core/utils/db_util.dart';
-import 'package:bima/features/auth/presentation/bloc/bloc/auth_bloc.dart';
-import 'package:bima/features/auth/presentation/pages/sign_in_screen.dart';
-import 'package:bima/features/doctor/data/data_sources/local/tables/doctor_table.dart';
-import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
-import 'package:bima/features/doctor/presentation/pages/doctor_list.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'injection.dart' as di;
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await di.init();
-  await DatabaseUtil.initDatabase();
-  DatabaseUtil.registerAdapter<DoctorTable>(DoctorTableAdapter());
+void main() {
   runApp(const MyApp());
 }
 
@@ -25,34 +10,34 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => di.g<DoctorBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => di.g<AuthBloc>(),
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Bima POC',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light,
-        home: BlocBuilder<AuthBloc, AuthState>(
-          buildWhen: (oldState, newState) {
-            return oldState is AuthInitialState;
-          },
-          builder: (context, state) {
-            if (state is AuthLoggedInState) {
-              return const DocotorList();
-            } else if (state is AuthLoggedOutState) {
-              return const SignInScreen();
-            } else {
-              return const Scaffold();
-            }
-          },
-        ),
-        // home: const PhoneSignIn(),
+    return MaterialApp(
+      title: 'Bima POC',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
+      ),
+      home: const Home(),
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('Initial Commit'),
       ),
     );
   }
