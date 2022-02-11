@@ -30,7 +30,7 @@ class DoctorsDisplay extends StatelessWidget {
                 ),
                 // placeholder: (context, url) => CircularProgressIndicator(),
                 errorWidget: (context, url, error) =>
-                    Center(child: Icon(Icons.image)),
+                    const Center(child: Icon(Icons.image)),
               ),
             ),
             title: Text(

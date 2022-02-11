@@ -102,6 +102,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                   BlocConsumer<DoctorBloc, DoctorState>(
                     listener: (context, state) {
                       if (state is DoctorsLoaded) {
+                        BlocProvider.of<DoctorBloc>(context)
+                            .add(GetDoctorEvent());
                         Navigator.pop(context);
                       }
                     },
