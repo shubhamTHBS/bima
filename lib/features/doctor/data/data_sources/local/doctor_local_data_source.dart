@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 abstract class DoctorLocalDataSource {
   Future<void> updateDoctor(DoctorTable doctorModel);
   Future<List<DoctorTable>> getDoctors();
-  Future<void> insertOrUpdateAll(List<DoctorModel> doctors);
+  Future<void> insertOrUpdateAll(List<DoctorTable> doctors);
   Future<void> deleteAll();
 }
 
@@ -25,10 +25,17 @@ class DoctorLocalDataSourceImpl extends DoctorLocalDataSource {
   }
 
   @override
-  Future<void> insertOrUpdateAll(List<DoctorModel> doctors) async {
+  Future<void> insertOrUpdateAll(List<DoctorTable> doctors) async {
     final Map<String, DoctorTable> doctorMap = {
       for (var doctor in doctors)
-        doctor.id.toString(): DoctorTable.fromModel(doctor)
+        doctor.id.toString(): DoctorTable(
+            id: doctor.id,
+            firstName: doctor.firstName,
+            lastName: doctor.lastName,
+            profilePic: doctor.profilePic,
+            rating: doctor.rating,
+            description: doctor.description,
+            specialization: doctor.specialization)
     };
     final Box<DoctorTable> box = await Hive.openBox('doctor');
     print(doctorMap);

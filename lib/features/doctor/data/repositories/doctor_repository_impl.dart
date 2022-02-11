@@ -20,14 +20,17 @@ class DoctorRepositoryImpl extends DoctorRepository {
     try {
       List<DoctorTable> cachedDoctors = await localDataSource.getDoctors();
       if (cachedDoctors.isNotEmpty) {
-        return Right(cachedDoctors);
+        return Right(cachedDoctors.map((e) => e.toEntity(e)).toList());
       } else {
         try {
           cachedDoctors.clear();
           final doctors = await remoteDataSource.getAllDoctors();
+          List<DoctorEntity> docs = doctors.map((e) => e.toEntity()).toList();
+          List<DoctorTable> d =
+              docs.map((element) => DoctorTable.fromEntity(element)).toList();
           await localDataSource.deleteAll();
-          await localDataSource.insertOrUpdateAll(doctors);
-          return Right(doctors);
+          await localDataSource.insertOrUpdateAll(d);
+          return Right(doctors.map((e) => e.toEntity()).toList());
         } on ServerException {
           return Left(ServerFailure());
         }
@@ -43,7 +46,7 @@ class DoctorRepositoryImpl extends DoctorRepository {
     try {
       // final DoctorModel doctorModel = DoctorModel.castFromEntity(doctorEntity);
       final response = await localDataSource
-          .updateDoctor(DoctorTable.fromModel(doctorEntity));
+          .updateDoctor(DoctorTable.fromEntity(doctorEntity));
       return Right(response);
     } on Exception {
       return Left(CacheFailure());

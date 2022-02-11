@@ -41,14 +41,14 @@ class _DoctorDetailState extends State<DoctorDetail> {
 
   @override
   void dispose() {
-    _firstNameController.clear();
+    _firstNameController.dispose();
+    _latNameController.dispose();
     super.dispose();
   }
 
   SafeArea _body() {
     return SafeArea(
       child: Stack(
-        // alignment: AlignmentDirectional.topCenter,
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
@@ -76,10 +76,25 @@ class _DoctorDetailState extends State<DoctorDetail> {
                   const SizedBox(
                     height: 40,
                   ),
-                  Text(
-                    widget.doctor.firstName + ' ' + widget.doctor.lastName,
-                    style: const TextStyle(
-                        fontFamily: Font.ROBOTO_CONDENSED_BOLD, fontSize: 18),
+                  BlocBuilder<DoctorBloc, DoctorState>(
+                    builder: (context, state) {
+                      if (state is DoctorsLoaded) {
+                        DoctorEntity doctor = state.doctors.firstWhere(
+                            (doctor) => doctor.id == widget.doctor.id);
+                        return Text(
+                          doctor.firstName + ' ' + doctor.lastName,
+                          style: const TextStyle(
+                              fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                              fontSize: 18),
+                        );
+                      }
+                      return Text(
+                        widget.doctor.firstName + ' ' + widget.doctor.lastName,
+                        style: const TextStyle(
+                            fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                            fontSize: 18),
+                      );
+                    },
                   ),
                   const SizedBox(
                     height: 8,
@@ -87,15 +102,18 @@ class _DoctorDetailState extends State<DoctorDetail> {
                   BlocConsumer<DoctorBloc, DoctorState>(
                     listener: (context, state) {
                       if (state is DoctorsLoaded) {
+                        BlocProvider.of<DoctorBloc>(context)
+                            .add(GetDoctorEvent());
                         Navigator.pop(context);
                       }
                     },
                     builder: (context, state) {
                       if (state is DoctorLoading) {
-                        return const LoadingWidget();
+                        return const CircularProgressIndicator();
                       } else if (state is SaveState) {
                         return Button(
-                          padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
                           height: 30,
                           title: 'Save Profile'.toUpperCase(),
                           onPressed: () {
@@ -119,7 +137,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                         );
                       }
                       return Button(
-                        padding: EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
                         height: 30,
                         title: 'Edit Profile'.toUpperCase(),
                         onPressed: () {
@@ -151,6 +170,12 @@ class _DoctorDetailState extends State<DoctorDetail> {
                       ))),
                   BlocBuilder<DoctorBloc, DoctorState>(
                     builder: (context, state) {
+                      if (state is DoctorsLoaded) {
+                        DoctorEntity doctor = state.doctors.firstWhere(
+                            (doctor) => doctor.id == widget.doctor.id);
+                        return _buildBodyPersonalDetails(
+                            doctor: doctor, state: state);
+                      }
                       return Expanded(
                         child: Container(
                           width: double.infinity,
@@ -185,10 +210,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                           ),
                                         ),
                                         TextFormField(
-                                          readOnly: state is DoctorInitial,
+                                          readOnly: state is! SaveState,
                                           controller: _firstNameController,
-                                          // onChanged: (value) =>
-                                          //     _firstNameController.text = value,
                                           decoration: const InputDecoration(
                                               isDense: true,
                                               contentPadding:
@@ -225,10 +248,8 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                           ),
                                         ),
                                         TextFormField(
-                                          readOnly: state is DoctorInitial,
+                                          readOnly: state is! SaveState,
                                           controller: _latNameController,
-                                          // onChanged: (value) =>
-                                          //     _latNameController.text = value,
                                           decoration: const InputDecoration(
                                               isDense: true,
                                               contentPadding:
@@ -266,8 +287,6 @@ class _DoctorDetailState extends State<DoctorDetail> {
                                         ),
                                         TextFormField(
                                           readOnly: true,
-                                          // initialValue:
-                                          //     widget.doctor.primaryContactNo,
                                           decoration: const InputDecoration(
                                               isDense: true,
                                               contentPadding:
@@ -291,21 +310,9 @@ class _DoctorDetailState extends State<DoctorDetail> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 22.5),
+            padding: const EdgeInsets.only(top: 22.5),
             child: Align(
               alignment: Alignment.topCenter,
-              // child: CircleAvatar(
-              //   backgroundColor: Colors.white,
-              //   radius: 45,
-              //   child: ClipOval(
-              //     child: Image.asset(
-              //       'assets/images/bima-logo.png',
-              //       height: 150,
-              //       width: 150,
-              //       fit: BoxFit.cover,
-              //     ),
-              //   ),
-              // ),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 45.0,
@@ -320,14 +327,133 @@ class _DoctorDetailState extends State<DoctorDetail> {
                           image: imageProvider, fit: BoxFit.cover),
                     ),
                   ),
-                  // placeholder: (context, url) => CircularProgressIndicator(),
                   errorWidget: (context, url, error) =>
-                      Center(child: Icon(Icons.image)),
+                      const Center(child: Icon(Icons.image)),
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Expanded _buildBodyPersonalDetails(
+      {required DoctorEntity doctor, required DoctorState state}) {
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        color: Colors.grey[300],
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Column(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'First Name'.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                        ),
+                      ),
+                      TextFormField(
+                        readOnly: state is! SaveState,
+                        controller:
+                            TextEditingController(text: doctor.firstName),
+                        decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                            border: InputBorder.none),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Last Name'.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                        ),
+                      ),
+                      TextFormField(
+                        readOnly: state is! SaveState,
+                        controller:
+                            TextEditingController(text: doctor.lastName),
+                        decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                            border: InputBorder.none),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Contact Number'.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontFamily: Font.ROBOTO_CONDENSED_BOLD,
+                        ),
+                      ),
+                      TextFormField(
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                            border: InputBorder.none),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

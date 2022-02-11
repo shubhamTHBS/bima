@@ -15,12 +15,12 @@ class DocotorList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context),
-      body: buildBody(context),
+      appBar: _appBar(context),
+      body: _buildBody(context),
     );
   }
 
-  AppBar appBar(BuildContext context) {
+  AppBar _appBar(BuildContext context) {
     return AppBar(
       elevation: 8,
       leading: BlocConsumer<AuthBloc, AuthState>(
@@ -28,7 +28,7 @@ class DocotorList extends StatelessWidget {
           if (state is AuthLoggedOutState) {
             Navigator.popUntil(context, (route) => route.isFirst);
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => SignInScreen()));
+                MaterialPageRoute(builder: (context) => const SignInScreen()));
           }
         },
         builder: (context, state) {
@@ -58,7 +58,7 @@ class DocotorList extends StatelessWidget {
     );
   }
 
-  BlocProvider<DoctorBloc> buildBody(BuildContext context) {
+  BlocProvider<DoctorBloc> _buildBody(BuildContext context) {
     return BlocProvider(
       create: (_) => g<DoctorBloc>()..add(GetDoctorEvent()),
       child: Padding(
@@ -70,15 +70,16 @@ class DocotorList extends StatelessWidget {
               child: BlocBuilder<DoctorBloc, DoctorState>(
                 builder: (context, state) {
                   if (state is DoctorInitial) {
-                    return const LoadingWidget();
+                    return const LoadingWidget(); //Loading Indicator
                   } else if (state is DoctorLoading) {
-                    return const LoadingWidget();
+                    return const LoadingWidget(); //Loading Indicator
                   } else if (state is DoctorsLoaded) {
-                    return DoctorsDisplay(doctorsList: state);
+                    return DoctorsDisplay(doctorsList: state); //Doctors List
                   } else if (state is DoctorsFailed) {
-                    return MessageDisplay(message: state.message);
+                    return MessageDisplay(
+                        message: state.message); //Error Message
                   } else {
-                    return const LoadingWidget();
+                    return const LoadingWidget(); //Loading Indicator
                   }
                 },
               ),
