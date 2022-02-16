@@ -17,6 +17,7 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
   DoctorBloc({required this.getAllDoctors, required this.updateDoctorDetail})
       : super(DoctorInitial()) {
     on<GetDoctorEvent>((event, emit) async {
+      emit(DoctorLoading());
       final Either<Failure, List<DoctorEntity>>? result =
           await getAllDoctors(NoParams());
       emit(result!.fold(

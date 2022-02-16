@@ -17,7 +17,7 @@ abstract class AuthDataSource {
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
-  String? _verificationId;
+  String _verificationId = '';
   final FirebaseAuth _firebaseAuth;
 
   AuthDataSourceImpl(this._firebaseAuth);
@@ -52,7 +52,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<User?> verifySmsCode(
       {required String smsCode, required String verificationId}) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: _verificationId!, smsCode: smsCode);
+        verificationId: _verificationId, smsCode: smsCode);
     UserCredential userCredential =
         await _firebaseAuth.signInWithCredential(credential);
     return userCredential.user;
