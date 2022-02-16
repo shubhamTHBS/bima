@@ -1,7 +1,7 @@
 import 'package:bima/features/auth/domain/entities/auth.dart';
 
 abstract class AuthRepository {
-  Future<void> signInWithPhoneNumber({
+  Future<void>? signInWithPhoneNumber({
     required Function onCodeSent,
     required Function onVerificationFailed,
     required Function onVerificationCompleted,
@@ -10,6 +10,6 @@ abstract class AuthRepository {
   });
   Future<AuthenticationEntity> verifySmsCode(
       {required String smsCode, required String verificationId});
-  Future<void> signOut();
-  Future<String?> getCurrentUser();
+  Future<void>? signOut();
+  Future<String?>? getCurrentUser();
 }

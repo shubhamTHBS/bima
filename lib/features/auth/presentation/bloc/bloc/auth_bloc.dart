@@ -22,13 +22,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required this.signOutUseCase,
       required this.getCurrentUser})
       : super(AuthInitialState()) {
-    getCurrentUser().then((currentUser) {
-      if (currentUser != null) {
-        emit(AuthLoggedInState(AuthenticationEntity(phoneNumber: currentUser)));
-      } else {
-        emit(AuthLoggedOutState());
-      }
+    on<PhoneAuthCurrentUser>((event, emit) async {
+      await getCurrentUser()?.then((currentUser) {
+        if (currentUser != null) {
+          emit(AuthLoggedInState(
+              AuthenticationEntity(phoneNumber: currentUser)));
+        } else {
+          emit(AuthLoggedOutState());
+        }
+      });
     });
+
     // ignore: unnecessary_null_comparison
 
     on<PhoneAuthNumberVerified>((event, emit) async {
@@ -43,11 +47,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<PhoneAuthCodeVerified>((event, emit) async {
       emit(AuthLoadingState());
-      final AuthenticationEntity user = await verifySmsCode(
+      final AuthenticationEntity? user = await verifySmsCode(
           OtpVerificationParams(
               verificationId: event.smsCode, smsCode: event.smsCode));
       emit(AuthLoggedInState(
-          AuthenticationEntity(phoneNumber: user.phoneNumber)));
+          AuthenticationEntity(phoneNumber: user!.phoneNumber)));
     });
 
     on<SignOut>((event, emit) async {

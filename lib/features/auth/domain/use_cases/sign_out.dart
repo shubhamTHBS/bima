@@ -5,7 +5,7 @@ class SignOutUseCase {
 
   SignOutUseCase(this.authRepository);
 
-  Future<void> call() async {
+  Future<void>? call() async {
     return await authRepository.signOut();
   }
 }

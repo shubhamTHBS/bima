@@ -5,7 +5,7 @@ class GetCurrentUser {
 
   GetCurrentUser(this.authRepository);
 
-  Future<String?> call() async {
+  Future<String?>? call() async {
     return await authRepository.getCurrentUser();
   }
 }
