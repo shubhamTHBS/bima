@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bima/core/error/exception.dart';
 import 'package:bima/features/doctor/data/data_sources/remote/doctor_remote_data_source.dart';
 import 'package:bima/features/doctor/data/models/doctor_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -47,7 +48,8 @@ void main() {
       // Act
       await remoteDataSourceImpl.getAllDoctors();
       // Assert
-      verify(mockHttpClient.get(Uri.parse(uriForDoctor)));
+      verify(
+          mockHttpClient.get(Uri.parse(dotenv.get('BASE_URL') + '/contacts')));
     });
 
     test('should return a list of DoctorModel when the statusCode is 200',

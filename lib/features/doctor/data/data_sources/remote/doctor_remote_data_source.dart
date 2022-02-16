@@ -17,7 +17,7 @@ class DoctorRemoteDataSourceImpl extends DoctorRemoteDataSource {
   @override
   Future<List<DoctorModel>> getAllDoctors() async {
     final response =
-        await client.get(Uri.parse(dotenv.get('API_URL') + '/contacts'));
+        await client.get(Uri.parse(dotenv.get('BASE_URL') + '/contacts'));
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
       final doctors =
