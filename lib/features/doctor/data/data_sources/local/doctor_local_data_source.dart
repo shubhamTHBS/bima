@@ -14,6 +14,7 @@ class DoctorLocalDataSourceImpl extends DoctorLocalDataSource {
   Future<List<DoctorTable>> getDoctors() async {
     final Box<DoctorTable> box = await Hive.openBox('doctor');
     List<DoctorTable> doctorData = box.toMap().values.toList();
+    print('Doctor data: $doctorData');
     doctorData.sort((a, b) => b.rating.compareTo(a.rating));
     return doctorData;
   }
