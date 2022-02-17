@@ -6,6 +6,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 abstract class DoctorRemoteDataSource {
+  /// Calls the `BASE_URL` with `contacts` endpoint.
+  /// Parse the value into List of type `DoctorModel`.
+  /// Sorts the list based on the `rating` from highest to lowest
+  ///
+  /// Throws a [ServerException] for all error codes.
   Future<List<DoctorModel>> getAllDoctors();
 }
 

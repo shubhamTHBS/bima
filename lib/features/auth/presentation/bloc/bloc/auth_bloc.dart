@@ -22,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required this.signOutUseCase,
       required this.getCurrentUser})
       : super(AuthInitialState()) {
+    /// `PhoneAuthCurrentUser` event which emits either [AuthLoggedInState] or [AuthLoggedOutState] state depending upon the current user information.
     on<PhoneAuthCurrentUser>((event, emit) async {
       await getCurrentUser()?.then((currentUser) {
         if (currentUser != null) {
@@ -34,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     // ignore: unnecessary_null_comparison
-
+    /// `PhoneAuthNumberVerified` event which emits [AuthLoadingState] and any of the given [AuthErrorState], [AuthLoggedInState], [AuthCodeSentState], [CodeAutoRetrevalTimeoutComplete], state depending upon the callback function being triggered.
     on<PhoneAuthNumberVerified>((event, emit) async {
       emit(AuthLoadingState());
 
@@ -45,6 +46,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           onCodeSent: onCodeSent,
           onCodeAutoRetrievalTimeout: onCodeAutoRetrievalTimeout));
     });
+
+    /// `PhoneAuthCodeVerified` event which emits [AuthLoadingState] and [AuthLoggedInState] after the user information is retrieved from the `verifySmsCode` method.
     on<PhoneAuthCodeVerified>((event, emit) async {
       emit(AuthLoadingState());
       final AuthenticationEntity? user = await verifySmsCode(
@@ -54,6 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           AuthenticationEntity(phoneNumber: user!.phoneNumber)));
     });
 
+    /// `SignOut` event which emits [AuthLoggedOutState] which will help in logging out a user and clear user info after a call to `signOutUseCase` method.
     on<SignOut>((event, emit) async {
       await signOutUseCase();
       emit(AuthLoggedOutState());
