@@ -3,9 +3,16 @@ import 'package:bima/features/doctor/data/models/doctor_model.dart';
 import 'package:hive/hive.dart';
 
 abstract class DoctorLocalDataSource {
+  /// Puts/Updates an individual cached [DoctorTable] data with a specific id which was gotten the last time
   Future<void> updateDoctor(DoctorTable doctorModel);
+
+  /// Gets the cached [DoctorTable] which was gotten the last time
   Future<List<DoctorTable>> getDoctors();
+
+  /// Stores the list of the cached [DoctorTable] data as Map<String, DoctorTable> doctorMap
   Future<void> insertOrUpdateAll(List<DoctorTable> doctors);
+
+  /// Deletes all the cached [DoctorTable] data which was gotten the last time
   Future<void> deleteAll();
 }
 
