@@ -6,7 +6,7 @@ class SignInWithPhoneNumber {
 
   SignInWithPhoneNumber(this.authRepository);
 
-  Future<void> call(VerifyPhoneNumberParams params) {
+  Future<void>? call(VerifyPhoneNumberParams params) {
     return authRepository.signInWithPhoneNumber(
         phoneNumber: params.phoneNumber,
         onVerificationFailed: params.onVerificationFailed,

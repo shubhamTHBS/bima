@@ -1,8 +1,5 @@
-import 'package:bima/features/auth/domain/entities/auth.dart';
-
-class AuthModel extends AuthenticationEntity {
+class AuthModel {
   final String phoneNumber;
 
-  const AuthModel({required this.phoneNumber})
-      : super(phoneNumber: phoneNumber);
+  const AuthModel({required this.phoneNumber});
 }

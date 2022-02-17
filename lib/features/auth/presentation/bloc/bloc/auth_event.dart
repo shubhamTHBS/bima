@@ -29,3 +29,5 @@ class PhoneAuthCodeVerified extends AuthEvent {
 }
 
 class SignOut extends AuthEvent {}
+
+class PhoneAuthCurrentUser extends AuthEvent {}

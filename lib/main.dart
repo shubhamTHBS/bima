@@ -5,13 +5,16 @@ import 'package:bima/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:bima/features/doctor/data/data_sources/local/tables/doctor_table.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
 import 'package:bima/features/doctor/presentation/pages/doctor_list.dart';
+import 'package:bima/injection.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'injection.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   await Firebase.initializeApp();
   await di.init();
   await DatabaseUtil.initDatabase();
@@ -38,19 +41,24 @@ class MyApp extends StatelessWidget {
         title: 'Bima POC',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
-        home: BlocBuilder<AuthBloc, AuthState>(
-          buildWhen: (oldState, newState) {
-            return oldState is AuthInitialState;
-          },
-          builder: (context, state) {
-            if (state is AuthLoggedInState) {
-              return const DocotorList();
-            } else if (state is AuthLoggedOutState) {
-              return const SignInScreen();
-            } else {
-              return const Scaffold();
-            }
-          },
+        home: BlocProvider(
+          create: (_) => g<AuthBloc>()..add(PhoneAuthCurrentUser()),
+          child: BlocBuilder<AuthBloc, AuthState>(
+            buildWhen: (oldState, newState) {
+              return oldState is AuthInitialState;
+            },
+            builder: (context, state) {
+              if (state is AuthLoggedInState) {
+                return const DocotorList();
+              } else if (state is AuthLoggedOutState) {
+                return const SignInScreen();
+              } else {
+                return const Scaffold(
+                  body: Text('data'),
+                );
+              }
+            },
+          ),
         ),
         // home: const PhoneSignIn(),
       ),

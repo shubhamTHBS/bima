@@ -16,7 +16,9 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
   final UpdateDoctorDetail updateDoctorDetail;
   DoctorBloc({required this.getAllDoctors, required this.updateDoctorDetail})
       : super(DoctorInitial()) {
+    /// `GetDoctorEvent` event which emits either [DoctorsFailed] or [DoctorsLoaded] state depending upon the response received after call to `getAllDoctors` usecase
     on<GetDoctorEvent>((event, emit) async {
+      emit(DoctorLoading());
       final Either<Failure, List<DoctorEntity>>? result =
           await getAllDoctors(NoParams());
       emit(result!.fold(
@@ -24,6 +26,7 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
           (doctors) => DoctorsLoaded(doctors: doctors)));
     });
 
+    /// `UpdateDoctorDetailEvent` event which emits either [DoctorsFailed] or [DoctorsLoaded] state after a call to `updateDoctorDetail` usecase
     on<UpdateDoctorDetailEvent>((event, emit) async {
       emit(DoctorLoading());
 

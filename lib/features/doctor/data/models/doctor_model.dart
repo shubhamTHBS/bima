@@ -1,6 +1,7 @@
 import 'package:bima/features/doctor/domain/entities/doctor.dart';
+import 'package:equatable/equatable.dart';
 
-class DoctorModel extends DoctorEntity {
+class DoctorModel extends Equatable {
   int id;
   String firstName;
   String lastName;
@@ -26,15 +27,7 @@ class DoctorModel extends DoctorEntity {
     required this.description,
     required this.specialization,
     this.languagesKnown,
-  }) : super(
-          id: id,
-          firstName: firstName,
-          lastName: lastName,
-          profilePic: profilePic,
-          specialization: specialization,
-          description: description,
-          rating: rating,
-        );
+  });
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     return DoctorModel(
@@ -70,14 +63,23 @@ class DoctorModel extends DoctorEntity {
     return data;
   }
 
-  // DoctorModel.castFromEntity(final DoctorEntity doctorEntity)
-  //     : super(
-  //         id: doctorEntity.id,
-  //         firstName: doctorEntity.firstName,
-  //         lastName: doctorEntity.lastName,
-  //         profilePic: doctorEntity.profilePic,
-  //         specialization: doctorEntity.specialization,
-  //         description: doctorEntity.description,
-  //         rating: doctorEntity.rating,
-  //       );
+  DoctorEntity toEntity() => DoctorEntity(
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      profilePic: profilePic,
+      specialization: specialization,
+      description: description,
+      rating: rating);
+
+  @override
+  List<Object?> get props => [
+        id,
+        firstName,
+        lastName,
+        profilePic,
+        specialization,
+        description,
+        rating
+      ];
 }

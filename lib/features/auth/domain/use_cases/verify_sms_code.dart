@@ -7,7 +7,7 @@ class VerifySmsCode {
 
   VerifySmsCode(this.authRepository);
 
-  Future<AuthenticationEntity> call(OtpVerificationParams params) async {
+  Future<AuthenticationEntity?> call(OtpVerificationParams params) async {
     return await authRepository.verifySmsCode(
         smsCode: params.smsCode, verificationId: params.verificationId);
   }
@@ -18,7 +18,7 @@ class OtpVerificationParams extends Equatable {
   final String verificationId;
 
   const OtpVerificationParams(
-      {required this.verificationId, required this.smsCode});
+      {required this.verificationId, required this.smsCode, phoneNumber});
 
   @override
   List<Object?> get props => [smsCode, verificationId];
