@@ -31,8 +31,10 @@ class DoctorBloc extends Bloc<DoctorEvent, DoctorState> {
       emit(DoctorLoading());
 
       await updateDoctorDetail(event.doctorEntity);
+
       final Either<Failure, List<DoctorEntity>>? result =
           await getAllDoctors(NoParams());
+      print('----->>>> $result');
       emit(result!.fold(
           (failure) => const DoctorsFailed(message: 'serverFailureMessage'),
           (doctors) => DoctorsLoaded(doctors: doctors)));

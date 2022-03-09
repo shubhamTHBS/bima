@@ -33,6 +33,4 @@ class DoctorRemoteDataSourceImpl extends DoctorRemoteDataSource {
       throw ServerException();
     }
   }
-
-  void sortByRating() {}
 }
