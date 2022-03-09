@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:bima/features/doctor/data/models/doctor_model.dart';
-import 'package:bima/features/doctor/domain/entities/doctor.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixtures/fixtures.dart';
@@ -23,11 +22,6 @@ void main() {
           'Meet Dr. Amitabh, our Chief Medical Officer. Dr. Amitabh completed his medical training at University of India Medical School and has practiced medicine for over 8 years. His passion is to reach out to every Indiaian with quality medical information and care and this is why he loves telemedicine. He enjoys reading, watching movies and listening to music.',
       specialization: 'General Practice',
       languagesKnown: 'English, Hindi, Kannada');
-
-  test('should be a subclass of Doctor entity', () async {
-    // Assert
-    expect(tDoctorModel, isA<DoctorEntity>());
-  });
 
   group('fromJson', () {
     test('should return a valid model when the JSON case is doctor', () async {

@@ -11,14 +11,16 @@ import 'package:http/http.dart' as http;
 import '../../../../../fixtures/fixtures.dart';
 import 'doctor_remote_data_source_test.mocks.dart';
 
-@GenerateMocks([
-  http.Client
-], customMocks: [
+@GenerateMocks([], customMocks: [
   MockSpec<http.Client>(as: #MockHttpClient, returnNullOnMissingStub: true),
+  MockSpec<DotEnv>(as: #MockDotEnv, returnNullOnMissingStub: true),
 ])
-void main() {
+void main() async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  await DotEnv().load();
   late DoctorRemoteDataSourceImpl remoteDataSourceImpl;
   late MockHttpClient mockHttpClient;
+  // late MockDotEnv mockDotEnv;
 
   setUp(() {
     mockHttpClient = MockHttpClient();

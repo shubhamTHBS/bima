@@ -4,6 +4,7 @@ import 'package:bima/features/auth/presentation/widgets/button.dart';
 import 'package:bima/features/doctor/domain/entities/doctor.dart';
 import 'package:bima/features/doctor/domain/use_cases/get_all_doctors.dart';
 import 'package:bima/features/doctor/presentation/bloc/bloc/doctor_bloc.dart';
+import 'package:bima/features/doctor/presentation/widgets/doctor_display.dart';
 import 'package:bima/features/doctor/presentation/widgets/loading.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -102,8 +103,7 @@ class _DoctorDetailState extends State<DoctorDetail> {
                   BlocConsumer<DoctorBloc, DoctorState>(
                     listener: (context, state) {
                       if (state is DoctorsLoaded) {
-                        BlocProvider.of<DoctorBloc>(context)
-                            .add(GetDoctorEvent());
+                        print('Hashcode ---->>> ${state.doctors.hashCode}');
                         Navigator.pop(context);
                       }
                     },
