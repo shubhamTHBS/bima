@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import '../../../../../fixtures/fixtures.dart';
 import 'doctor_local_data_source_test.mocks.dart';
 
 void setupPathProviderMock(String baseLocation) {
@@ -28,38 +26,36 @@ void main() {
     localDataSourceImpl = DoctorLocalDataSourceImpl();
   });
 
-  group('cacheNumberTrivia', () {
-    var articles = <DoctorTable>[
-      DoctorTable(
-          id: 1,
-          firstName: 'test',
-          lastName: '',
-          profilePic: 'url',
-          specialization: 'url',
-          description: '',
-          rating: '')
-    ];
+  // group('abc', () {
+  // var articles = <DoctorTable>[
+  //   DoctorTable(
+  //       id: 1,
+  //       firstName: 'test',
+  //       lastName: '',
+  //       profilePic: 'url',
+  //       specialization: 'url',
+  //       description: '',
+  //       rating: '')
+  // ];
 
-    final Map<String, DoctorTable> doctorMap = {
-      for (var doctor in articles)
-        doctor.id.toString(): DoctorTable(
-            id: doctor.id,
-            firstName: doctor.firstName,
-            lastName: doctor.lastName,
-            profilePic: doctor.profilePic,
-            rating: doctor.rating,
-            description: doctor.description,
-            specialization: doctor.specialization)
-    };
+  // final Map<String, DoctorTable> doctorMap = {
+  //   for (var doctor in articles)
+  //     doctor.id.toString(): DoctorTable(
+  //         id: doctor.id,
+  //         firstName: doctor.firstName,
+  //         lastName: doctor.lastName,
+  //         profilePic: doctor.profilePic,
+  //         rating: doctor.rating,
+  //         description: doctor.description,
+  //         specialization: doctor.specialization)
+  // };
 
-    test('should call sharedPreferences to cache the data', () async {
-      when(mockHiveInterface.openBox(any)).thenAnswer((_) async => mockHiveBox);
-      when(mockHiveBox.putAll(any)).thenAnswer((answer) async => answer);
-      await mockHiveBox.putAll(doctorMap);
-      // dataSource.cacheLastNumberTrivia(tNumberTriviaModel);
-      // final expectedJsonString = jsonEncode(tNumberTriviaModel.toJson());
-      verifyNever(mockHiveInterface.openBox('doctor'));
-      verifyNever(mockHiveBox.putAll(doctorMap));
-    });
-  });
+  // test('should call sharedPreferences to cache the data', () async {
+  //   when(mockHiveInterface.openBox(any)).thenAnswer((_) async => mockHiveBox);
+  //   when(mockHiveBox.putAll(any)).thenAnswer((answer) async => answer);
+  //   await mockHiveBox.putAll(doctorMap);
+  //   verifyNever(mockHiveInterface.openBox('doctor'));
+  //   verifyNever(mockHiveBox.putAll(doctorMap));
+  // });
+  // });
 }

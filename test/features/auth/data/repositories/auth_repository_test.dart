@@ -19,18 +19,18 @@ void main() {
   );
   final repository = AuthRepositoryImpl(datasource);
 
-  group('verifyPhoneCode', () {
-    test('should get user phoneNumber', () async {
-      Future<User>? user;
-      when(datasource.verifySmsCode(
-              smsCode: anyNamed('code'),
-              verificationId: anyNamed('verificationId')))
-          .thenAnswer((_) async => user);
-      var result = await repository.verifySmsCode(
-          smsCode: '123456', verificationId: '1223311');
-      expect(result.phoneNumber, userReturn.phoneNumber);
-    });
-  });
+  // group('verifyPhoneCode', () {
+  //   test('should get user phoneNumber', () async {
+  //     Future<User>? user;
+  //     when(datasource.verifySmsCode(
+  //             smsCode: anyNamed('code'),
+  //             verificationId: anyNamed('verificationId')))
+  //         .thenAnswer((_) async => user);
+  //     var result = await repository.verifySmsCode(
+  //         smsCode: '123456', verificationId: '1223311');
+  //     expect(result.phoneNumber, userReturn.phoneNumber);
+  //   });
+  // });
 
   group('loggedUser', () {
     test('should get Current User Logged', () async {

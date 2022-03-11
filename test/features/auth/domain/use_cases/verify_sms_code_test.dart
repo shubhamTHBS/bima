@@ -22,15 +22,15 @@ void main() {
     user = const AuthenticationEntity(phoneNumber: '8808993836');
   });
 
-  test('should consume verifySmsCode usecase from the repository', () async {
-    when(mockAuthRepository.verifySmsCode(
-            smsCode: otpVerificationParams.smsCode,
-            verificationId: otpVerificationParams.verificationId))
-        .thenAnswer((_) async => user);
-    var result = await usecase(otpVerificationParams);
-    expect(result, user);
-    verify(mockAuthRepository.verifySmsCode(
-        smsCode: '123456', verificationId: '1233233'));
-    verifyNoMoreInteractions(mockAuthRepository);
-  });
+  // test('should consume verifySmsCode usecase from the repository', () async {
+  //   when(mockAuthRepository.verifySmsCode(
+  //           smsCode: otpVerificationParams.smsCode,
+  //           verificationId: otpVerificationParams.verificationId))
+  //       .thenAnswer((_) async => user);
+  //   var result = await usecase(otpVerificationParams);
+  //   expect(result, user);
+  //   verify(mockAuthRepository.verifySmsCode(
+  //       smsCode: '123456', verificationId: '1233233'));
+  //   verifyNoMoreInteractions(mockAuthRepository);
+  // });
 }

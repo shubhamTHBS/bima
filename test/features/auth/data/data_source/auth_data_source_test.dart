@@ -45,25 +45,25 @@ void main() {
     expect(datasource.signOut(), completes);
   });
 
-  test('cant verify phonenumber', () async {
-    // await datasource.signInWithPhoneNumber(
-    //     phoneNumber: '',
-    //     onCodeAutoRetrievalTimeout: () {
-    //       verificationCompleted(credential);
-    //     },
-    //     onCodeSent: anyNamed('codeSent'),
-    //     onVerificationCompleted: null,
-    //     onVerificationFailed: null);
-    var captured = verify(auth.verifyPhoneNumber(
-            phoneNumber: any,
-            codeSent: anyNamed('codeSent'),
-            verificationCompleted: anyNamed('verificationCompleted'),
-            verificationFailed:
-                captureThat(isNotNull, named: 'verificationFailed'),
-            codeAutoRetrievalTimeout: anyNamed('codeAutoRetrievalTimeout')))
-        .captured;
-    var verificationFailed = captured[0] as PhoneVerificationFailed;
-    verificationFailed(FirebaseAuthException(code: '123'));
-    expect(123, FirebaseAuthException(code: '123'));
-  });
+  // test('cant verify phonenumber', () async {
+  //   // await datasource.signInWithPhoneNumber(
+  //   //     phoneNumber: '',
+  //   //     onCodeAutoRetrievalTimeout: () {
+  //   //       verificationCompleted(credential);
+  //   //     },
+  //   //     onCodeSent: anyNamed('codeSent'),
+  //   //     onVerificationCompleted: null,
+  //   //     onVerificationFailed: null);
+  //   var captured = verify(auth.verifyPhoneNumber(
+  //           phoneNumber: any,
+  //           codeSent: anyNamed('codeSent'),
+  //           verificationCompleted: anyNamed('verificationCompleted'),
+  //           verificationFailed:
+  //               captureThat(isNotNull, named: 'verificationFailed'),
+  //           codeAutoRetrievalTimeout: anyNamed('codeAutoRetrievalTimeout')))
+  //       .captured;
+  //   var verificationFailed = captured[0] as PhoneVerificationFailed;
+  //   verificationFailed(FirebaseAuthException(code: '123'));
+  //   expect(123, FirebaseAuthException(code: '123'));
+  // });
 }
